@@ -1,24 +1,26 @@
 import 'dart:math';
-
 import 'package:attack_of_legend/components/Bat.dart';
-import 'package:attack_of_legend/main.dart';
-import 'package:attack_of_legend/widgets/LegendGameWidget.dart';
+import 'package:attack_of_legend/components/FlyerSprite.dart';
+import 'package:attack_of_legend/fx/ExploreFx.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame/effects.dart';
-import 'package:flame/flame.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 class Flyer extends BodyComponent with ContactCallbacks, CollisionCallbacks {
   final Vector2 atPosition;
   final Vector2 withDirection;
   final double power;
+  final VoidCallback onDead;
+  final VoidCallback onAttackBat;
+  bool isGoingToDead = false;
   double radius;
   Flyer(
       {required this.radius,
       required this.atPosition,
       required this.withDirection,
+      required this.onDead,
+      required this.onAttackBat,
       this.power = 1});
   @override
   Body createBody() {
@@ -30,10 +32,10 @@ class Flyer extends BodyComponent with ContactCallbacks, CollisionCallbacks {
       ..angularDamping = 1
       ..gravityScale = Vector2(1, 1)
       ..position = atPosition;
-
+    // renderBody = false;
     final flyerBody = world.createBody(bodyDef);
 
-    final shape = CircleShape()..radius = radius * 2;
+    final shape = CircleShape()..radius = radius;
 
     debugMode = false;
     final fixtureDef = FixtureDef(shape)
@@ -49,9 +51,8 @@ class Flyer extends BodyComponent with ContactCallbacks, CollisionCallbacks {
 
   @override
   Future<void> onLoad() async {
-    // game.word.add();
-    add(SpriteComponent(
-        sprite: Sprite(await Flame.images.load("characters/flier.png")))
+    add(FlyerSprite()
+      ..position = Vector2(1, 1) * radius
       ..anchor = Anchor.center
       ..size = Vector2(1, 1) * radius * 2);
 
@@ -59,19 +60,18 @@ class Flyer extends BodyComponent with ContactCallbacks, CollisionCallbacks {
   }
 
   @override
-  void beginContact(Object other, Contact contact) {
-    // if (co)
-    // print("beginContact ?????????: ${other}");
-    // _sprite?.scale = Vector2(3, 3);
+  void beginContact(Object other, Contact contact) async {
     if (other is Bat) {
+      world.add(ExploreFx(pathFx: 'Bat_Fx')..position = other.position);
       other.removeFromParent();
+    } else {
+      if (!isGoingToDead) {
+        isGoingToDead = true;
+        await Future.delayed(const Duration(seconds: 5));
+        game.world.add(ExploreFx(pathFx: 'Flier')..position = position);
+        removeFromParent();
+      }
     }
     super.beginContact(other, contact);
-  }
-
-  @override
-  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    print("object");
-    super.onCollision(intersectionPoints, other);
   }
 }

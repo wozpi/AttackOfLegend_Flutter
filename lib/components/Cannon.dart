@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/image_composition.dart';
@@ -11,12 +10,15 @@ class Cannon extends PositionComponent {
   PositionComponent? _shooterPosition;
   int _directionShoot = 1;
   bool isGoingToAim = false;
+
   @override
   FutureOr<void> onLoad() async {
+    priority = -5;
     Image imgWheelBack = await Flame.images.load("characters/hero/wheel.png");
     Vector2 originWheelBackSize = imgWheelBack.size / 10;
     add(SpriteComponent(sprite: Sprite(imgWheelBack))
       ..anchor = Anchor.center
+      ..priority = -1
       ..position = Vector2(2, 0.8)
       ..size = Vector2(4, 4 * originWheelBackSize.y / originWheelBackSize.x));
 
@@ -36,10 +38,11 @@ class Cannon extends PositionComponent {
     Vector2 originWheelFrontSize = imgWheelFront.size / 10;
     add(SpriteComponent(sprite: Sprite(imgWheelFront))
       ..anchor = Anchor.center
+      ..priority = -1
       ..position = Vector2(-0.8, 0.8)
       ..size = Vector2(4, 4 * originWheelFrontSize.y / originWheelFrontSize.x));
 
-    _shooterPosition = PositionComponent(position: Vector2(5, 0));
+    _shooterPosition = PositionComponent(position: Vector2(5, 0.6));
     _aimShooter?.add(_shooterPosition!);
     return super.onLoad();
   }
@@ -56,7 +59,6 @@ class Cannon extends PositionComponent {
           _directionShoot = 1;
         }
       }
-
       _aimShooter?.angle += dt * 0.5 * _directionShoot;
     }
     super.update(dt);

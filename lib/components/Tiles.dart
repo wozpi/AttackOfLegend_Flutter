@@ -8,7 +8,7 @@ import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:flutter/material.dart';
 
 class Tiles extends BodyComponent {
-  Tiles({required this.atPosition, required this.size});
+  Tiles({required this.atPosition, required this.size}) : super(priority: 5);
   Vector2 atPosition;
   double size;
 
@@ -33,7 +33,7 @@ class Tiles extends BodyComponent {
   Future<void> onLoad() async {
     add(SpriteComponent(
         sprite: Sprite(await Flame.images.load('background/tiles.png')))
-      ..size = Vector2(size, size)
+      ..size = Vector2(size * 1.01, size)
       ..anchor = Anchor.center
       ..position = atPosition);
     return super.onLoad();

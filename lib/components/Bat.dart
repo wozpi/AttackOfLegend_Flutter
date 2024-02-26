@@ -20,7 +20,7 @@ class Bat extends BodyComponent {
       ..fixedRotation = false
       ..angularDamping = 1
       ..gravityScale = Vector2(1, 1)
-      ..position = Vector2(50, 23);
+      ..position = Vector2(10, 23);
 
     final flyerBody = world.createBody(bodyDef);
 
@@ -35,6 +35,7 @@ class Bat extends BodyComponent {
     flyerBody.applyForce(Vector2(1, -0.2) * 1000000);
     flyerBody.setAwake(true);
     flyerBody.userData = this;
+    renderBody = false;
     return flyerBody;
   }
 

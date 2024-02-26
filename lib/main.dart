@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'dart:io';
+import 'dart:math';
+// import 'dart:io';
 
 import 'package:attack_of_legend/components/Ball.dart';
 import 'package:attack_of_legend/components/Flyer.dart';
@@ -13,6 +16,7 @@ import 'package:flame/game.dart';
 import 'package:flame_forge2d/body_component.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:flame_forge2d/forge2d_game.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:forge2d/src/dynamics/body.dart';
 
@@ -20,7 +24,14 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   Flame.device.fullScreen();
   Flame.device.setLandscape();
-  runApp(GameWidget(game: LegendGameWidget()));
+  if (kIsWeb || !Platform.isAndroid || !Platform.isIOS) {
+    runApp(GameWidget(
+        game: LegendGameWidget(
+            camera:
+                CameraComponent.withFixedResolution(width: 932, height: 430))));
+  } else {
+    runApp(GameWidget(game: LegendGameWidget()));
+  }
 }
 
 const TextStyle _textStyle = TextStyle(color: Colors.white, fontSize: 2);
