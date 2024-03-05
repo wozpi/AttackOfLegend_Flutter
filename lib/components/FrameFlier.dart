@@ -29,10 +29,13 @@ class FrameFlier extends PositionComponent {
 
     _textNumberFlier = TextComponent(text: "5")
       ..anchor = Anchor.center
-      ..position = Vector2(4.2, 4.6)
+      ..position = Vector2(4.2, 3.9)
       ..textRenderer = TextPaint(
           style: const TextStyle(
-              color: Colors.white, fontSize: 1.8, fontFamily: 'Normal'));
+              fontStyle: FontStyle.normal,
+              color: Colors.white,
+              fontSize: 1.8,
+              fontFamily: 'SubTitle'));
     add(_textNumberFlier!);
     return super.onLoad();
   }

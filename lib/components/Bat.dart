@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 import 'dart:ui';
 
 import 'package:flame/collisions.dart';
@@ -11,20 +10,29 @@ import 'package:flame/geometry.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
 
 class Bat extends BodyComponent {
+  bool isSmooth;
+  double speedFly;
+  List<Vector2>? pathMove;
+  Vector2 atPosition;
+  Bat(
+      {required this.atPosition,
+      this.pathMove,
+      this.speedFly = 15,
+      this.isSmooth = true});
   @override
   Body createBody() {
-    final bodyDef = BodyDef()
+    bodyDef = BodyDef()
       ..userData = this
-      ..type = BodyType.static
+      ..type = BodyType.kinematic
       ..allowSleep = false
       ..fixedRotation = false
-      ..angularDamping = 1
-      ..gravityScale = Vector2(1, 1)
-      ..position = Vector2(10, 23);
+      ..angularDamping = 0
+      ..gravityScale = Vector2(0, 0)
+      ..position = atPosition;
 
-    final flyerBody = world.createBody(bodyDef);
+    final flyerBody = world.createBody(bodyDef!);
 
-    final shape = CircleShape()..radius = 1;
+    final shape = CircleShape()..radius = 1.1;
 
     final fixtureDef = FixtureDef(shape)
       ..restitution = .8
@@ -35,14 +43,67 @@ class Bat extends BodyComponent {
     flyerBody.applyForce(Vector2(1, -0.2) * 1000000);
     flyerBody.setAwake(true);
     flyerBody.userData = this;
-    renderBody = false;
+    // renderBody = false;
+    // add(MoveEffect.to(Vector2.all(10), EffectController(duration: 3)));
+
     return flyerBody;
   }
 
   @override
   Future<void> onLoad() async {
+    // position = atPosition;
     add(BatBody());
+
     return super.onLoad();
+  }
+
+  int _indexMove = 0;
+  int _directionMove = 1;
+  // Vector2 _directionMove = Vector2.zero();
+  @override
+  void update(double dt) {
+    if (pathMove != null) {
+      if (isSmooth) {
+        moveSmooth(dt);
+      } else {
+        moveSnap(dt);
+      }
+    }
+    super.update(dt);
+  }
+
+  void moveSmooth(double dt) {
+    if (_indexMove < pathMove!.length && _indexMove >= 0) {
+      Vector2 direction = pathMove![_indexMove] - body.position;
+      body.linearVelocity = direction.normalized() * 15;
+      if (pathMove![_indexMove].distanceTo(body.position) < 0.5) {
+        _indexMove += _directionMove;
+      }
+    } else {
+      _directionMove *= -1;
+      _indexMove += _directionMove;
+    }
+  }
+
+  double timerDelay = 4;
+  void moveSnap(double dt) {
+    if (timerDelay > 2.5) {
+      if (_indexMove < pathMove!.length && _indexMove >= 0) {
+        Vector2 direction = pathMove![_indexMove] - body.position;
+        body.linearVelocity = direction.normalized() * speedFly;
+        if (pathMove![_indexMove].distanceTo(body.position) < 0.5) {
+          timerDelay = 0;
+          body.linearVelocity = Vector2.zero();
+
+          _indexMove += _directionMove;
+        }
+      } else {
+        _directionMove *= -1;
+        _indexMove += _directionMove;
+      }
+    } else {
+      timerDelay += dt;
+    }
   }
 }
 
@@ -134,7 +195,7 @@ class BatBody extends PositionComponent {
           ..size = Vector2(0.5, 0.5 * imgEyeRight.size.y / imgEyeRight.size.x);
 
     add(spriteEyeRightComponent);
-
+    add(RectangleHitbox(size: Vector2(3, 3)));
     return super.onLoad();
   }
 }

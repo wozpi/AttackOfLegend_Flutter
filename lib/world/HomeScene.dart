@@ -4,29 +4,22 @@ import 'package:attack_of_legend/widgets/LegendGameWidget.dart';
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/flame.dart';
-import '../components/Background.dart';
+import 'package:flutter/foundation.dart';
+import '../components/LegendBackground.dart';
 import '../components/LegendButton.dart';
-import '../components/Tiles.dart';
 
 class HomeScene extends Component with HasGameRef<LegendGameWidget> {
+  final VoidCallback onPlay;
+  final VoidCallback onLevel;
+  HomeScene({required this.onPlay, required this.onLevel});
   double sizeTiles = 5;
   double sizeBackground = 45;
   @override
   FutureOr<void> onLoad() async {
-    double offsetY = gameRef.size.y / gameRef.camera.viewfinder.zoom;
-    // Add ground
-    for (var i = 0; i < 20; i++) {
-      add(Background(
-          atPosition: Vector2(i * sizeBackground, offsetY - sizeBackground / 2),
-          width: sizeBackground * 1.01,
-          height: sizeBackground));
-    }
-    // Add ground
-    for (var i = 0; i < 20; i++) {
-      add(Tiles(
-          atPosition: Vector2(i * sizeTiles, offsetY - sizeTiles / 2),
-          size: sizeTiles));
-    }
+    LegendBackground(
+            parent: this,
+            screenSize: gameRef.size / gameRef.camera.viewfinder.zoom)
+        .onLoad();
 
     Vector2 gameWorldSize = gameRef.size / gameRef.camera.viewfinder.zoom;
     var imgHeaderLeft = await Flame.images.load("home/Floor_left_mask.png");
@@ -40,6 +33,7 @@ class HomeScene extends Component with HasGameRef<LegendGameWidget> {
     add(SpriteComponent(sprite: Sprite(imgHeaderRight))
       ..position = Vector2(gameWorldSize.x, 0)
       ..anchor = Anchor.topRight
+      ..priority = 10
       ..size = Vector2(
           gameWorldSize.y * imgHeaderRight.size.x / imgHeaderRight.size.y,
           gameWorldSize.y));
@@ -54,9 +48,19 @@ class HomeScene extends Component with HasGameRef<LegendGameWidget> {
       path: 'hub/button_green.png',
       title: 'Play',
       onPressed: () {
-        (gameRef.world as LegendWorld).enterPlayGameScene();
+        onPlay();
       },
     )..position = Vector2(gameRef.size.x / 20, (gameRef.size.y / 20) + 5));
+
+    add(LegendIconButton(
+        icon: 'levels/level_btn.png',
+        onPressed: () {
+          (gameRef.world as LegendWorld).enterLevelScene();
+        })
+      ..size = Vector2(6, 6 * (230 / 178))
+      ..priority = 20
+      ..position =
+          Vector2(5, (gameRef.size.y / gameRef.camera.viewfinder.zoom) - 5));
 
     return super.onLoad();
   }

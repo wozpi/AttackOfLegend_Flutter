@@ -1,36 +1,34 @@
-import 'dart:async';
 import 'package:attack_of_legend/components/Background.dart';
 import 'package:attack_of_legend/components/Tiles.dart';
-import 'package:attack_of_legend/widgets/LegendGameWidget.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame_forge2d/flame_forge2d.dart' as forge_2d;
 import 'package:flame_forge2d/forge2d_game.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
-class LegendBackground extends PositionComponent
-    with HasGameRef<LegendGameWidget> {
+class LegendBackground {
   double sizeTiles = 5;
   double sizeBackground = 45;
-  @override
-  FutureOr<void> onLoad() {
-    final boundaries = createBoundaries(gameRef);
-    double offsetY = gameRef.size.y / gameRef.camera.viewfinder.zoom;
-    addAll(boundaries);
+  Component parent;
+  Vector2 screenSize;
+  LegendBackground({required this.parent, required this.screenSize});
+
+  void onLoad() {
+    // final boundaries = createBoundaries(gameRef);
+    // addAll(boundaries);
     // Add ground
     for (var i = 0; i < 20; i++) {
-      add(Background(
-          atPosition: Vector2(i * sizeBackground, offsetY - sizeBackground / 2),
-          width: sizeBackground,
-          height: sizeBackground));
+      parent.add(Background(
+          atPosition:
+              Vector2(i * sizeBackground, screenSize.y - sizeBackground / 2))
+        ..size = Vector2.all(sizeBackground));
     }
     // Add ground
     for (var i = 0; i < 20; i++) {
-      add(Tiles(
-          atPosition: Vector2(i * sizeTiles, offsetY - sizeTiles / 2),
+      parent.add(Tiles(
+          atPosition: Vector2(i * sizeTiles, screenSize.y - sizeTiles / 2),
           size: sizeTiles));
     }
-    return super.onLoad();
   }
 }
 

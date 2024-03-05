@@ -12,7 +12,7 @@ class Flyer extends BodyComponent with ContactCallbacks, CollisionCallbacks {
   final Vector2 withDirection;
   final double power;
   final VoidCallback onDead;
-  final VoidCallback onAttackBat;
+  final Function onAttackBat;
   bool isGoingToDead = false;
   double radius;
   Flyer(
@@ -21,7 +21,8 @@ class Flyer extends BodyComponent with ContactCallbacks, CollisionCallbacks {
       required this.withDirection,
       required this.onDead,
       required this.onAttackBat,
-      this.power = 1});
+      this.power = 1})
+      : super(priority: 3);
   @override
   Body createBody() {
     final bodyDef = BodyDef()
@@ -30,7 +31,7 @@ class Flyer extends BodyComponent with ContactCallbacks, CollisionCallbacks {
       ..allowSleep = false
       ..fixedRotation = false
       ..angularDamping = 1
-      ..gravityScale = Vector2(1, 1)
+      ..gravityScale = Vector2.all(3)
       ..position = atPosition;
     // renderBody = false;
     final flyerBody = world.createBody(bodyDef);
@@ -43,9 +44,10 @@ class Flyer extends BodyComponent with ContactCallbacks, CollisionCallbacks {
       ..friction = 1
       ..density = 100;
     flyerBody.createFixture(fixtureDef);
-    flyerBody.applyForce(withDirection * 100000 * max(1, power));
+    flyerBody.applyForce(withDirection * 20000 * max(1, power));
     flyerBody.setAwake(true);
     flyerBody.userData = this;
+
     return flyerBody;
   }
 
@@ -63,12 +65,14 @@ class Flyer extends BodyComponent with ContactCallbacks, CollisionCallbacks {
   void beginContact(Object other, Contact contact) async {
     if (other is Bat) {
       world.add(ExploreFx(pathFx: 'Bat_Fx')..position = other.position);
+      onAttackBat(other);
       other.removeFromParent();
     } else {
       if (!isGoingToDead) {
         isGoingToDead = true;
         await Future.delayed(const Duration(seconds: 5));
         game.world.add(ExploreFx(pathFx: 'Flier')..position = position);
+        onDead();
         removeFromParent();
       }
     }

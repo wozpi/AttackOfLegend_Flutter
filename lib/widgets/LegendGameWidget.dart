@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:attack_of_legend/components/Toolbar.dart';
 import 'package:attack_of_legend/world/HomeScene.dart';
+import 'package:attack_of_legend/world/LevelScene.dart';
 import 'package:attack_of_legend/world/PlayGameScene.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -12,7 +13,7 @@ import 'package:flame_forge2d/flame_forge2d.dart' as forge_2d;
 class LegendGameWidget extends Forge2DGame
     with HasCollisionDetection, LongPressDetector {
   LegendGameWidget({CameraComponent? camera})
-      : super(zoom: 10, gravity: Vector2(0, 98), cameraComponent: camera);
+      : super(zoom: 10, gravity: Vector2(0, 980), cameraComponent: camera);
   @override
   FutureOr<void> onLoad() {
     camera.viewfinder.anchor = Anchor.topLeft;
@@ -41,14 +42,28 @@ class LegendWorld extends forge_2d.Forge2DWorld
     _toolBar?.updateNumberFlier(count);
   }
 
-  void enterPlayGameScene() {
+  void enterNextPlayGameScene() {
     _toolBar?.enableBackButton();
-    changeScene(PlayGameScene());
+    changeScene(PlayGameScene(atLevel: 0));
+  }
+
+  void enterPlayGameScene(int level) {
+    _toolBar?.enableBackButton();
+    changeScene(PlayGameScene(atLevel: level));
   }
 
   void enterHomeScene() {
     _toolBar?.enableSettingButton();
-    changeScene(HomeScene());
+    changeScene(HomeScene(
+        onPlay: () {
+          enterPlayGameScene(25);
+        },
+        onLevel: enterLevelScene));
+  }
+
+  void enterLevelScene() {
+    _toolBar?.enableBackButton();
+    changeScene(LevelScene());
   }
 
   void changeScene(Component scene) {

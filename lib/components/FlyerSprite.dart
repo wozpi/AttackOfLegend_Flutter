@@ -1,10 +1,10 @@
 import 'dart:async';
 
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame/effects.dart';
 import 'package:flame/flame.dart';
 
-class FlyerSprite extends PositionComponent {
+class FlyerSprite extends PositionComponent with HasGameRef {
   SpriteComponent? _eyeLeft;
   SpriteComponent? _eyeRight;
   Vector2 sizeEye = Vector2.zero();
@@ -29,7 +29,7 @@ class FlyerSprite extends PositionComponent {
 
     add(_eyeLeft!);
     add(_eyeRight!);
-
+    add(RectangleHitbox(size: Vector2(3, 3)));
     return super.onLoad();
   }
 
@@ -47,7 +47,6 @@ class FlyerSprite extends PositionComponent {
         _eyeRight?.size = size / 12;
       }
     }
-    // TODO: implement update
     super.update(dt);
   }
 }

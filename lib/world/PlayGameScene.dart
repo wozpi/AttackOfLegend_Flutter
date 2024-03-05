@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'package:attack_of_legend/common/LevelManager.dart';
 import 'package:attack_of_legend/components/BigHero.dart';
-import 'package:attack_of_legend/components/LegendBackground.dart';
+import 'package:attack_of_legend/levels/LegendLevel.dart';
+import 'package:attack_of_legend/popups/DefeatPopup.dart';
+import 'package:attack_of_legend/popups/WinPopup.dart';
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/flame.dart';
@@ -8,10 +11,16 @@ import 'package:flame/text.dart';
 import 'package:flutter/material.dart';
 import '../components/Bat.dart';
 import '../components/Flyer.dart';
+import '../components/LegendBackground.dart';
 import '../widgets/LegendGameWidget.dart';
+
+enum StateGame { onReady, playing, defeat, won }
 
 class PlayGameScene extends Component
     with HasGameRef<LegendGameWidget>, HasCollisionDetection {
+  PlayGameScene({this.atLevel = 0});
+  int atLevel;
+  StateGame _stateGame = StateGame.onReady;
   PowerProgressBar? _powerProgressBar;
 
   BigHero? _hero;
@@ -23,13 +32,15 @@ class PlayGameScene extends Component
   final maxShoot = 5;
   var _totalShoot = 0;
 
+  LegendLevel? _currentLevel;
   @override
   FutureOr<void> onLoad() async {
-    add(LegendBackground());
+    LegendBackground(
+            parent: this,
+            screenSize: gameRef.size / gameRef.camera.viewfinder.zoom)
+        .onLoad();
     _hero = BigHero();
     add(_hero!);
-
-    add(Bat());
 
     double offsetY = gameRef.size.y / gameRef.camera.viewfinder.zoom;
     _powerProgressBar = PowerProgressBar()
@@ -37,6 +48,10 @@ class PlayGameScene extends Component
       ..position = Vector2(4, offsetY - 3.5);
     add(_powerProgressBar!);
 
+    _currentLevel = LevelManager().takeLevel(atLevel);
+    add(_currentLevel!);
+
+    _stateGame = StateGame.playing;
     return super.onLoad();
   }
 
@@ -51,7 +66,7 @@ class PlayGameScene extends Component
         }
       }
 
-      takePower(directionPowerProgress * dt * 35);
+      takePower(directionPowerProgress * dt * 65);
     }
     super.update(dt);
   }
@@ -78,7 +93,7 @@ class PlayGameScene extends Component
     if (isStartTakePower) {
       isStartTakePower = false;
       if (_hero != null) {
-        add(Flyer(
+        _currentLevel?.add(Flyer(
             radius: 1.1,
             atPosition: _hero!.atShoot(),
             withDirection: _hero!.getDirection(),
@@ -97,13 +112,62 @@ class PlayGameScene extends Component
     return _totalShoot < maxShoot;
   }
 
-  void onFlierDead() {}
+  void onFlierDead() {
+    if (!canShoot()) {
+      repairForFinishGame(StateGame.defeat);
+    }
+  }
 
-  void onFlierAttackBat() {}
+  void onFlierAttackBat(Bat bat) {
+    if (_currentLevel != null) {
+      _currentLevel?.onFlierAttackBat(bat);
+      if (_currentLevel!.numberBatAlive() <= 0) {
+        print("_stateGame: $_stateGame");
+        repairForFinishGame(StateGame.won);
+      }
+    }
+  }
+
+  void repairForFinishGame(StateGame state, {int duration = 3}) async {
+    if (_stateGame == StateGame.playing) {
+      _stateGame = state;
+      await Future.delayed(Duration(seconds: duration));
+      if (_stateGame == StateGame.defeat) {
+        add(DefeatPopup(
+          onRestart: () {
+            _restartGame();
+          },
+          onGoHome: () {
+            (gameRef.world as LegendWorld).enterHomeScene();
+          },
+        ));
+      } else {
+        add(WinPopup(
+          onRestart: () {
+            _restartGame();
+          },
+          onGoHome: () {
+            // update level
+            _restartGame();
+          },
+        ));
+      }
+    }
+  }
+
+  void _restartGame() {
+    _totalShoot = 0;
+    (gameRef.world as LegendWorld).updateNumberFlier(maxShoot - _totalShoot);
+    _stateGame = StateGame.playing;
+    _currentLevel?.removeFromParent();
+    _currentLevel = LevelManager().takeLevel(0);
+    add(_currentLevel!);
+  }
 }
 
 class PowerProgressBar extends PositionComponent
     with HasGameRef<LegendGameWidget> {
+  PowerProgressBar() : super(priority: 10);
   final Paint _paint = Paint();
   TextComponent? _powerLabel;
   double _power = 0.0;

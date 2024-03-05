@@ -3,13 +3,11 @@ import 'dart:ui';
 import 'package:attack_of_legend/components/Cannon.dart';
 import 'package:attack_of_legend/widgets/LegendGameWidget.dart';
 import 'package:flame/components.dart';
-import 'package:flame/effects.dart';
-import 'package:flame/flame.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/image_composition.dart';
-import 'package:flutter/material.dart' as Material;
 
 class BigHero extends PositionComponent with HasGameRef<LegendGameWidget> {
+  BigHero() : super(priority: 4);
   Cannon? _cannon;
   @override
   FutureOr<void> onLoad() async {

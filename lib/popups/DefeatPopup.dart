@@ -11,7 +11,11 @@ import '../components/LegendIconButton.dart';
 
 class DefeatPopup extends PositionComponent
     with TapCallbacks, HasGameRef<LegendGameWidget> {
-  DefeatPopup() : super(priority: 20);
+  final VoidCallback onRestart;
+  final VoidCallback onGoHome;
+
+  DefeatPopup({required this.onRestart, required this.onGoHome})
+      : super(priority: 50);
   final _paint = Paint()..color = Colors.black54;
 
   @override
@@ -30,7 +34,12 @@ class DefeatPopup extends PositionComponent
           style: const TextStyle(
               color: Colors.white, fontSize: 2.5, fontFamily: 'SubTitle')));
 
-    add(LegendIconButton(icon: 'popup/btn_retry.png', onPressed: () {})
+    add(LegendIconButton(
+        icon: 'popup/btn_retry.png',
+        onPressed: () {
+          onRestart();
+          removeFromParent();
+        })
       ..size = Vector2(5, 5)
       ..position =
           Vector2((gameRef.size.x / 20) - 6, (gameRef.size.y / 20) + 5));
@@ -39,7 +48,7 @@ class DefeatPopup extends PositionComponent
       path: 'popup/orange_btn.png',
       title: 'Home',
       onPressed: () {
-        (gameRef.world as LegendWorld).enterPlayGameScene();
+        onGoHome();
       },
     )..position =
         Vector2((gameRef.size.x / 20) + 6, (gameRef.size.y / 20) + 5));
@@ -48,7 +57,8 @@ class DefeatPopup extends PositionComponent
 
   @override
   void render(Canvas canvas) {
-    canvas.drawRect(Rect.fromLTRB(0, 0, width, height), _paint);
+    canvas.drawRect(
+        Rect.fromLTWH(0, 0, gameRef.size.x, gameRef.size.y), _paint);
     super.render(canvas);
   }
 }

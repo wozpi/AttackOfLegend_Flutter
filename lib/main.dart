@@ -1,11 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
-// import 'dart:io';
-
 import 'package:attack_of_legend/components/Ball.dart';
-import 'package:attack_of_legend/components/Flyer.dart';
-import 'package:attack_of_legend/player.dart';
 import 'package:attack_of_legend/widgets/LegendGameWidget.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
@@ -13,12 +8,9 @@ import 'package:flame/events.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
-import 'package:flame_forge2d/body_component.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
-import 'package:flame_forge2d/forge2d_game.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:forge2d/src/dynamics/body.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -169,7 +161,6 @@ class HeroGame extends Forge2DGame with LongPressDetector, TapDetector {
   HeroGame() : super(gravity: Vector2(0, 98), zoom: 20);
   SpriteComponent player = SpriteComponent();
 
-  Flyer? _flyer;
   @override
   FutureOr<void> onLoad() async {
     // final playerImage = await images.load('hero.png');

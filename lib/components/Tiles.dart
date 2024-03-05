@@ -1,11 +1,6 @@
-import 'dart:math';
-
-import 'package:attack_of_legend/widgets/LegendGameWidget.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
-import 'package:flame/palette.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
-import 'package:flutter/material.dart';
 
 class Tiles extends BodyComponent {
   Tiles({required this.atPosition, required this.size}) : super(priority: 5);

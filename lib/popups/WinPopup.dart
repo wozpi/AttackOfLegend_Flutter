@@ -11,7 +11,11 @@ import '../components/LegendIconButton.dart';
 
 class WinPopup extends PositionComponent
     with TapCallbacks, HasGameRef<LegendGameWidget> {
-  WinPopup() : super(priority: 20);
+  final VoidCallback onRestart;
+  final VoidCallback onGoHome;
+
+  WinPopup({required this.onRestart, required this.onGoHome})
+      : super(priority: 20);
   final _paint = Paint()..color = Colors.black54;
 
   @override
@@ -36,10 +40,10 @@ class WinPopup extends PositionComponent
           Vector2((gameRef.size.x / 20) - 6, (gameRef.size.y / 20) + 5));
 
     add(LegendButton(
-      path: 'popup/orange_btn.png',
+      path: 'popup/btn_green.png',
       title: 'Home',
       onPressed: () {
-        (gameRef.world as LegendWorld).enterPlayGameScene();
+        (gameRef.world as LegendWorld).enterNextPlayGameScene();
       },
     )..position =
         Vector2((gameRef.size.x / 20) + 6, (gameRef.size.y / 20) + 5));
@@ -48,7 +52,8 @@ class WinPopup extends PositionComponent
 
   @override
   void render(Canvas canvas) {
-    canvas.drawRect(Rect.fromLTRB(0, 0, width, height), _paint);
+    canvas.drawRect(
+        Rect.fromLTRB(0, 0, gameRef.size.x, gameRef.size.y), _paint);
     super.render(canvas);
   }
 }
