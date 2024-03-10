@@ -10,7 +10,6 @@ import '../components/Obstruct.dart';
 class Level22 extends LegendLevel {
   @override
   FutureOr<void> onLoad() {
-    super.onLoad();
     Vector2 canvasSize = gameRef.size / gameRef.camera.viewfinder.zoom;
     initBat(Bat(atPosition: Vector2(34, (canvasSize.y / 2) + 10)));
     add(Obstruct(
@@ -20,5 +19,6 @@ class Level22 extends LegendLevel {
 
     add(Obstruct(
         atPosition: Vector2(30, 15), numberObstacle: 5, angleRoation: pi));
+    super.onLoad();
   }
 }

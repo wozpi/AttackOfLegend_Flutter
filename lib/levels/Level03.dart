@@ -7,7 +7,7 @@ import 'package:flame/components.dart';
 class Level03 extends LegendLevel {
   @override
   FutureOr<void> onLoad() {
-    super.onLoad();
     initBat(Bat(atPosition: Vector2(50, 14)));
+    super.onLoad();
   }
 }

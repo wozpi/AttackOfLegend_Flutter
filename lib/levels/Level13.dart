@@ -7,8 +7,6 @@ import 'package:flame/components.dart';
 class Level13 extends LegendLevel {
   @override
   FutureOr<void> onLoad() {
-    super.onLoad();
-
     initBat(Bat(
         atPosition: Vector2(30, 20),
         pathMove: [
@@ -42,5 +40,6 @@ class Level13 extends LegendLevel {
         atPosition: Vector2(
             ((gameRef.size.x / gameRef.camera.viewfinder.zoom) / 2) + 14,
             ((gameRef.size.y / gameRef.camera.viewfinder.zoom)) - 12)));
+    super.onLoad();
   }
 }

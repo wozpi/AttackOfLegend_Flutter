@@ -24,7 +24,6 @@ class Obstacle extends PositionComponent {
         ..size = Vector2.all(widthObstacle)
         ..anchor = Anchor.center
         ..priority = 0
-        ..setAlpha(50)
         ..position = Vector2(
             0,
             ((-numberObstacle ~/ 2) * widthObstacle) +

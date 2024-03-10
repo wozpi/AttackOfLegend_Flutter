@@ -1,13 +1,13 @@
 import 'dart:math';
 import 'package:attack_of_legend/components/Bat.dart';
 import 'package:attack_of_legend/components/FlyerSprite.dart';
+import 'package:attack_of_legend/components/MagicHat.dart';
 import 'package:attack_of_legend/fx/ExploreFx.dart';
-import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:flutter/foundation.dart';
 
-class Flyer extends BodyComponent with ContactCallbacks, CollisionCallbacks {
+class Flyer extends BodyComponent with ContactCallbacks {
   final Vector2 atPosition;
   final Vector2 withDirection;
   final double power;
@@ -22,18 +22,19 @@ class Flyer extends BodyComponent with ContactCallbacks, CollisionCallbacks {
       required this.onDead,
       required this.onAttackBat,
       this.power = 1})
-      : super(priority: 3);
+      : super(priority: 3, key: ComponentKey.unique());
   @override
   Body createBody() {
     final bodyDef = BodyDef()
       ..userData = this
       ..type = BodyType.dynamic
       ..allowSleep = false
+      ..bullet = true
       ..fixedRotation = false
       ..angularDamping = 1
       ..gravityScale = Vector2.all(3)
       ..position = atPosition;
-    // renderBody = false;
+    renderBody = false;
     final flyerBody = world.createBody(bodyDef);
 
     final shape = CircleShape()..radius = radius;
@@ -62,18 +63,31 @@ class Flyer extends BodyComponent with ContactCallbacks, CollisionCallbacks {
   }
 
   @override
+  void update(double dt) {
+    if (position.x > game.size.x * 1.2 || position.y > game.size.y * 1.2) {
+      onDead();
+      removeFromParent();
+    }
+    super.update(dt);
+  }
+
+  @override
   void beginContact(Object other, Contact contact) async {
     if (other is Bat) {
       world.add(ExploreFx(pathFx: 'Bat_Fx')..position = other.position);
       onAttackBat(other);
       other.removeFromParent();
     } else {
-      if (!isGoingToDead) {
-        isGoingToDead = true;
-        await Future.delayed(const Duration(seconds: 5));
-        game.world.add(ExploreFx(pathFx: 'Flier')..position = position);
-        onDead();
-        removeFromParent();
+      if (other != BlockMagicHat) {
+        if (!isGoingToDead) {
+          isGoingToDead = true;
+          await Future.delayed(const Duration(seconds: 5));
+          if (!isRemoved) {
+            game.world.add(ExploreFx(pathFx: 'Flier')..position = position);
+            onDead();
+            removeFromParent();
+          }
+        }
       }
     }
     super.beginContact(other, contact);

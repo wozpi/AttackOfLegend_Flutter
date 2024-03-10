@@ -8,8 +8,6 @@ import 'package:flame/components.dart';
 class Level15 extends LegendLevel {
   @override
   FutureOr<void> onLoad() {
-    super.onLoad();
-
     Vector2 canvasSize = gameRef.size / gameRef.camera.viewfinder.zoom;
 
     initBat(
@@ -19,5 +17,6 @@ class Level15 extends LegendLevel {
         atPosition: Vector2(30, canvasSize.y - 5),
         numberObstacle: 4,
         angleRoation: 0));
+    super.onLoad();
   }
 }

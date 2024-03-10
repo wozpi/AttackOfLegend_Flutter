@@ -28,6 +28,7 @@ class BounceObstruct extends BodyComponent {
       userData: this, // To be able to determine object in collision
       position: atPosition,
     )..type = BodyType.kinematic;
+    renderBody = false;
     return world.createBody(bodyDef)..createFixture(fixtureDef);
   }
 

@@ -7,8 +7,6 @@ import 'package:flame/components.dart';
 class Level14 extends LegendLevel {
   @override
   FutureOr<void> onLoad() {
-    super.onLoad();
-
     initBat(Bat(
         atPosition: Vector2(90, 15),
         pathMove: [
@@ -21,7 +19,7 @@ class Level14 extends LegendLevel {
           Vector2(90, 23),
         ],
         isSmooth: true,
-        speedFly: 25));
+        speedFly: 20));
 
     initBat(Bat(
         atPosition: Vector2(25, 25),
@@ -36,7 +34,7 @@ class Level14 extends LegendLevel {
           Vector2(70, 10),
         ],
         isSmooth: true,
-        speedFly: 25));
+        speedFly: 20));
 
     initBat(Bat(
         atPosition: Vector2(15, 25),
@@ -51,6 +49,7 @@ class Level14 extends LegendLevel {
           Vector2(80, 10),
         ],
         isSmooth: true,
-        speedFly: 25));
+        speedFly: 20));
+    super.onLoad();
   }
 }

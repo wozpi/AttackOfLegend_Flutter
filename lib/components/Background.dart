@@ -11,6 +11,6 @@ class Background extends SpriteComponent {
         Sprite(await Flame.images.load('background/background_castles.png'));
     anchor = Anchor.center;
     position = atPosition;
-    return super.onLoad();
+    super.onLoad();
   }
 }

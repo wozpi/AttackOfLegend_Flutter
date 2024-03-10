@@ -23,11 +23,12 @@ class Obstruct extends BodyComponent {
         userData: this,
         density: 0,
         restitution: 0,
-        friction: 0);
+        friction: 1);
     final bodyDef = BodyDef(
       userData: this, // To be able to determine object in collision
       position: Vector2(0, -halfWidth * numberObstacle),
     );
+    renderBody = false;
     return world.createBody(bodyDef)..createFixture(fixtureDef);
   }
 

@@ -13,7 +13,6 @@ class Cannon extends PositionComponent {
 
   @override
   FutureOr<void> onLoad() async {
-    priority = -5;
     Image imgWheelBack = await Flame.images.load("characters/hero/wheel.png");
     Vector2 originWheelBackSize = imgWheelBack.size / 10;
     add(SpriteComponent(sprite: Sprite(imgWheelBack))

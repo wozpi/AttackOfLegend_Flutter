@@ -43,8 +43,7 @@ class Bat extends BodyComponent {
     flyerBody.applyForce(Vector2(1, -0.2) * 1000000);
     flyerBody.setAwake(true);
     flyerBody.userData = this;
-    // renderBody = false;
-    // add(MoveEffect.to(Vector2.all(10), EffectController(duration: 3)));
+    renderBody = false;
 
     return flyerBody;
   }
@@ -75,7 +74,7 @@ class Bat extends BodyComponent {
   void moveSmooth(double dt) {
     if (_indexMove < pathMove!.length && _indexMove >= 0) {
       Vector2 direction = pathMove![_indexMove] - body.position;
-      body.linearVelocity = direction.normalized() * 15;
+      body.linearVelocity = direction.normalized() * speedFly;
       if (pathMove![_indexMove].distanceTo(body.position) < 0.5) {
         _indexMove += _directionMove;
       }

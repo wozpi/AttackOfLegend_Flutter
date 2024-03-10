@@ -8,20 +8,24 @@ class FlyerSprite extends PositionComponent with HasGameRef {
   SpriteComponent? _eyeLeft;
   SpriteComponent? _eyeRight;
   Vector2 sizeEye = Vector2.zero();
+  FlyerSprite() : super(key: ComponentKey.unique());
   @override
   FutureOr<void> onLoad() async {
     add(SpriteComponent(
-        sprite: Sprite(Flame.images.fromCache("characters/flier/flier.png")))
+        sprite: Sprite(Flame.images.fromCache("characters/flier/flier.png")),
+        key: ComponentKey.unique())
       ..anchor = Anchor.center
       ..size = size);
 
     _eyeLeft = SpriteComponent(
+        key: ComponentKey.unique(),
         sprite: Sprite(Flame.images.fromCache("characters/flier/eyes.png")))
       ..anchor = Anchor.center
       ..position = Vector2(-1 * size.x / 10, -2.5 * size.y / 10)
       ..size = size / 12;
 
     _eyeRight = SpriteComponent(
+        key: ComponentKey.unique(),
         sprite: Sprite(Flame.images.fromCache("characters/flier/eyes.png")))
       ..anchor = Anchor.center
       ..position = Vector2(2.5 * size.x / 10, -2.5 * size.y / 10)

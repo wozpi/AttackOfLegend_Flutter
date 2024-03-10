@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:attack_of_legend/widgets/LegendGameWidget.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -12,9 +13,9 @@ import '../components/LegendIconButton.dart';
 class WinPopup extends PositionComponent
     with TapCallbacks, HasGameRef<LegendGameWidget> {
   final VoidCallback onRestart;
-  final VoidCallback onGoHome;
+  final VoidCallback onNext;
 
-  WinPopup({required this.onRestart, required this.onGoHome})
+  WinPopup({required this.onRestart, required this.onNext})
       : super(priority: 20);
   final _paint = Paint()..color = Colors.black54;
 
@@ -26,24 +27,35 @@ class WinPopup extends PositionComponent
       ..position = Vector2(gameRef.size.x / 20, 14)
       ..anchor = Anchor.center
       ..size = Vector2(8 * imgBrandLogo.size.x / imgBrandLogo.size.y, 8));
-
-    add(TextComponent(text: "Ride from every fail")
+    var texBox = [
+      'This leaf is me, I am a part of the leaf, we are all one.',
+      'Protecting the environment is protecting ourselves.',
+      "Take people's lives by saving the next forest.",
+      'We and the environment are closely connected.'
+    ];
+    add(TextComponent(text: texBox[Random().nextInt(texBox.length)])
       ..anchor = Anchor.center
       ..position = Vector2(gameRef.size.x / 20, 19)
       ..textRenderer = TextPaint(
           style: const TextStyle(
               color: Colors.white, fontSize: 2.5, fontFamily: 'SubTitle')));
 
-    add(LegendIconButton(icon: 'popup/btn_retry.png', onPressed: () {})
+    add(LegendIconButton(
+        icon: 'popup/btn_retry.png',
+        onPressed: () {
+          onRestart();
+          removeFromParent();
+        })
       ..size = Vector2(5, 5)
       ..position =
           Vector2((gameRef.size.x / 20) - 6, (gameRef.size.y / 20) + 5));
 
     add(LegendButton(
       path: 'popup/btn_green.png',
-      title: 'Home',
+      title: 'Next',
       onPressed: () {
-        (gameRef.world as LegendWorld).enterNextPlayGameScene();
+        onNext();
+        removeFromParent();
       },
     )..position =
         Vector2((gameRef.size.x / 20) + 6, (gameRef.size.y / 20) + 5));

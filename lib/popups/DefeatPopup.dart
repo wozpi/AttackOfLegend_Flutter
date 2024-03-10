@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:attack_of_legend/widgets/LegendGameWidget.dart';
 import 'package:flame/components.dart';
-import 'package:flame/events.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +8,7 @@ import 'package:flutter/material.dart';
 import '../components/LegendButton.dart';
 import '../components/LegendIconButton.dart';
 
-class DefeatPopup extends PositionComponent
-    with TapCallbacks, HasGameRef<LegendGameWidget> {
+class DefeatPopup extends PositionComponent with HasGameRef<LegendGameWidget> {
   final VoidCallback onRestart;
   final VoidCallback onGoHome;
 
