@@ -1,31 +1,29 @@
 import 'dart:async';
 
-import 'package:attack_of_legend/components/Bat.dart';
 import 'package:attack_of_legend/levels/LegendLevel.dart';
 import 'package:flame/components.dart';
+
+import '../components/BigBoss.dart';
 
 class Level29 extends LegendLevel {
   @override
   FutureOr<void> onLoad() {
-    initBat(Bat(
-        atPosition: Vector2(61, 10),
-        pathMove: [
-          Vector2(61, 10),
-          Vector2((gameRef.size.x / gameRef.camera.viewfinder.zoom) - 10,
-              (gameRef.size.y / gameRef.camera.viewfinder.zoom) - 10),
-          Vector2((gameRef.size.x / gameRef.camera.viewfinder.zoom) / 2,
-              ((gameRef.size.y / gameRef.camera.viewfinder.zoom) / 2) - 6),
-          Vector2((gameRef.size.x / gameRef.camera.viewfinder.zoom) - 8,
-              ((gameRef.size.y / gameRef.camera.viewfinder.zoom) / 2) - 10)
-        ],
-        isSmooth: false,
-        speedFly: 45));
-
-    initBat(Bat(
+    var bigBoss = (BigBoss(
         atPosition: Vector2(
             ((gameRef.size.x / gameRef.camera.viewfinder.zoom) / 2) + 10,
-            ((gameRef.size.y / gameRef.camera.viewfinder.zoom)) - 10)));
+            ((gameRef.size.y / gameRef.camera.viewfinder.zoom)) - 15),
+        pathMove: [
+          Vector2(((gameRef.size.x / gameRef.camera.viewfinder.zoom) / 2) + 10,
+              ((gameRef.size.y / gameRef.camera.viewfinder.zoom)) - 15),
+          Vector2(((gameRef.size.x / gameRef.camera.viewfinder.zoom) / 2) + 12,
+              ((gameRef.size.y / gameRef.camera.viewfinder.zoom) - 20)),
+        ]));
+    initBat(bigBoss);
 
+    initBat(BigBoss(
+      atPosition:
+          Vector2(((gameRef.size.x / gameRef.camera.viewfinder.zoom) / 2), 10),
+    ));
     super.onLoad();
   }
 }

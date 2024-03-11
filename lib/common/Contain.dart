@@ -1,5 +1,3 @@
-import 'package:shared_preferences/shared_preferences.dart';
-
 class Contain {
   static int priorityFlyer = 3;
   static int priorityBodyHat = 3;

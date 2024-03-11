@@ -76,6 +76,7 @@ class Flyer extends BodyComponent with ContactCallbacks {
     if (other is Bat) {
       world.add(ExploreFx(pathFx: 'Bat_Fx')..position = other.position);
       onAttackBat(other);
+      other.onDead();
       other.removeFromParent();
     } else {
       if (other != BlockMagicHat) {

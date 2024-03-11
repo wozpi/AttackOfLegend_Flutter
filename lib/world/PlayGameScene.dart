@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:attack_of_legend/common/LevelManager.dart';
+import 'package:attack_of_legend/components/BigBoss.dart';
 import 'package:attack_of_legend/components/BigHero.dart';
 import 'package:attack_of_legend/components/GreenTree.dart';
 import 'package:attack_of_legend/levels/LegendLevel.dart';
@@ -178,6 +179,10 @@ class PlayGameScene extends Component
     if (_currentLevel != null) {
       _currentLevel?.onFlierAttackBat(bat);
       (gameRef.world as LegendWorld).onBatDeadSFX();
+      if (bat is BigBoss) {
+        (gameRef.world as LegendWorld).onExploreSFX();
+      }
+
       updatePercenterGamePlayer(
           (_currentLevel!.totalBat - _currentLevel!.numberBatAlive()) *
               1.0 /

@@ -6,8 +6,6 @@ import 'package:attack_of_legend/components/LevelMetal.dart';
 import 'package:attack_of_legend/widgets/LegendGameWidget.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../common/Contain.dart';
 import '../components/Background.dart';
 import '../components/LegendBackground.dart';
 import '../components/SkyComponent.dart';
@@ -16,7 +14,7 @@ import '../components/Tiles.dart';
 class LevelScene extends Component with HasGameRef<LegendGameWidget> {
   final _paint = Paint()..color = Colors.black26;
   int _atPage = 0;
-  final int _totalLevels = 28;
+  final int _totalLevels = 29;
   final int _maxItemInRow = 6;
   // current level player was played
   int _currentLevel = 35;

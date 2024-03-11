@@ -28,7 +28,7 @@ class WinPopup extends PositionComponent
       ..anchor = Anchor.center
       ..size = Vector2(8 * imgBrandLogo.size.x / imgBrandLogo.size.y, 8));
     var texBox = [
-      'This leaf is me, I am a part of the leaf, we are all one.',
+      'The leaf is me, I am a part of the leaf, we are all one.',
       'Protecting the environment is protecting ourselves.',
       "Take people's lives by saving the next forest.",
       'We and the environment are closely connected.'

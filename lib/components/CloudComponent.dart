@@ -17,9 +17,9 @@ class CloudComponent extends SpriteComponent with HasGameRef {
     var imgCloud = Flame.images.fromCache('environment/cloud1.png');
     sprite = Sprite(imgCloud);
     size = Vector2(withSize, withSize * imgCloud.height / imgCloud.width);
-    var time = (gameScreen.x + withSize - x) / 0.8;
+    var time = (gameScreen.x + withSize - x) / 3.8;
     add(MoveEffect.to(
-        Vector2(gameScreen.x + withSize, y), EffectController(duration: time),
+        Vector2(gameScreen.x, y), EffectController(duration: time),
         onComplete: onDead));
     return super.onLoad();
   }

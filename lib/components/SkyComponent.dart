@@ -24,6 +24,9 @@ class SkyComponent extends Component with HasGameRef {
     }
 
     add(takeRandomCloud(pathClouds[Random().nextInt(pathClouds.length)])
+      ..position = Vector2(-10, Random().nextDouble() * 10 + 5));
+
+    add(takeRandomCloud(pathClouds[Random().nextInt(pathClouds.length)])
       ..position = Vector2(0, Random().nextDouble() * 10 + 5));
 
     add(takeRandomCloud(pathClouds[Random().nextInt(pathClouds.length)])
@@ -42,8 +45,10 @@ class SkyComponent extends Component with HasGameRef {
   }
 
   void randomClouds() {
-    add(takeRandomCloud(pathClouds[Random().nextInt(pathClouds.length)])
-      ..position = Vector2(0, Random().nextDouble() * 10 + 5));
+    CloudComponent cloud =
+        takeRandomCloud(pathClouds[Random().nextInt(pathClouds.length)]);
+    add(cloud
+      ..position = Vector2(-cloud.withSize, Random().nextDouble() * 10 + 5));
   }
 
   CloudComponent takeRandomCloud(String path) {

@@ -14,11 +14,13 @@ class Bat extends BodyComponent {
   double speedFly;
   List<Vector2>? pathMove;
   Vector2 atPosition;
+  double scaleUp;
   Bat(
       {required this.atPosition,
       this.pathMove,
       this.speedFly = 15,
-      this.isSmooth = true});
+      this.isSmooth = true,
+      this.scaleUp = 1});
   @override
   Body createBody() {
     bodyDef = BodyDef()
@@ -32,7 +34,7 @@ class Bat extends BodyComponent {
 
     final flyerBody = world.createBody(bodyDef!);
 
-    final shape = CircleShape()..radius = 1.1;
+    final shape = CircleShape()..radius = 1.1 * scaleUp;
 
     final fixtureDef = FixtureDef(shape)
       ..restitution = .8
@@ -51,7 +53,7 @@ class Bat extends BodyComponent {
   @override
   Future<void> onLoad() async {
     // position = atPosition;
-    add(BatBody());
+    add(BatBody()..scale = Vector2.all(scaleUp));
 
     return super.onLoad();
   }
@@ -104,6 +106,8 @@ class Bat extends BodyComponent {
       timerDelay += dt;
     }
   }
+
+  void onDead() {}
 }
 
 class BatBody extends PositionComponent {

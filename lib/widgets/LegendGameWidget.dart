@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:math';
-
 import 'package:attack_of_legend/common/AudioGame.dart';
 import 'package:attack_of_legend/common/Contain.dart';
 import 'package:attack_of_legend/components/Toolbar.dart';
@@ -166,6 +164,10 @@ class LegendWorld extends forge_2d.Forge2DWorld
 
   void onShootSFX() {
     _audioManager?.firer();
+  }
+
+  void onExploreSFX() {
+    _audioManager?.explore();
   }
 
   void onFlierDeadSFX() {

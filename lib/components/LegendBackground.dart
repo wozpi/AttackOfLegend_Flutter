@@ -16,8 +16,8 @@ class LegendBackground {
     for (var i = 0; i < 20; i++) {
       parent.add(Background(
           atPosition:
-              Vector2(i * sizeBackground, screenSize.y - sizeBackground / 2))
-        ..size = Vector2.all(sizeBackground)
+              Vector2((i * sizeBackground), screenSize.y - sizeBackground / 2))
+        ..size = Vector2.all(sizeBackground) * 1.01
         ..paint = Paint());
     }
     // Add ground

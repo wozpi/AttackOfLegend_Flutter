@@ -8,6 +8,7 @@ class AudioGame extends Component {
   late AudioPool batDeadPool;
   late AudioPool popPool;
   late AudioPool shootPool;
+  late AudioPool explorePool;
 
   late AudioPool completePool;
   late AudioPool failPool;
@@ -35,6 +36,11 @@ class AudioGame extends Component {
       maxPlayers: 4,
     );
 
+    explorePool = await FlameAudio.createPool(
+      'sfx/Bomb.wav',
+      minPlayers: 1,
+      maxPlayers: 4,
+    );
     shootPool = await FlameAudio.createPool(
       'sfx/shoot.wav',
       minPlayers: 1,
@@ -59,7 +65,7 @@ class AudioGame extends Component {
 
   void startBgmMusic() {
     if (!FlameAudio.bgm.isPlaying && canPlayMusic) {
-      // FlameAudio.bgm.play('musics/Woodland_Fantasy.mp3');
+      FlameAudio.bgm.play('musics/Woodland_Fantasy.mp3');
     }
   }
 
@@ -84,12 +90,19 @@ class AudioGame extends Component {
   void firer() {
     if (canPlaySound) {
       shootPool.start();
+      batDeadPool.start();
     }
   }
 
   void batDead() {
     if (canPlaySound) {
       batDeadPool.start();
+    }
+  }
+
+  void explore() async {
+    if (canPlaySound) {
+      explorePool.start();
     }
   }
 
