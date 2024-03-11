@@ -38,8 +38,6 @@ class LevelScene extends Component with HasGameRef<LegendGameWidget> {
     final pref = await SharedPreferences.getInstance();
     _currentLevel = pref.getInt(Contain.heroLevel) ?? 1;
 
-    print('current level?: $_currentLevel');
-
     _totalPage = (_totalLevels * 1.0 / (_maxItemInRow * 2)).ceil();
 
     if (gameRef.buildContext != null) {
