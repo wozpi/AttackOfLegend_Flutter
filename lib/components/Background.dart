@@ -8,7 +8,7 @@ class Background extends SpriteComponent {
   @override
   Future<void> onLoad() async {
     sprite =
-        Sprite(await Flame.images.load('background/background_castles.png'));
+        Sprite(Flame.images.fromCache('background/background_castles.png'));
     anchor = Anchor.center;
     position = atPosition;
     super.onLoad();

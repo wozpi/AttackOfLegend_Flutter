@@ -41,7 +41,6 @@ class LevelManager {
     // initialization logic
   }
   LegendLevel takeLevel(int index) {
-    print('take level: $index');
     switch (index - 1) {
       case 0:
         return Level01();

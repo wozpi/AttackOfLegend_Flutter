@@ -23,7 +23,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace "com.example.attack_of_legend"
+    namespace "com.urbighero.attack_of_legend"
     compileSdk flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 

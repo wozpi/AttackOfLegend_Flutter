@@ -27,7 +27,7 @@ class Tiles extends BodyComponent {
   @override
   Future<void> onLoad() async {
     add(SpriteComponent(
-        sprite: Sprite(await Flame.images.load('background/tiles.png')))
+        sprite: Sprite(Flame.images.fromCache('background/tiles.png')))
       ..size = Vector2(size * 1.04, size)
       ..anchor = Anchor.center
       ..position = atPosition);

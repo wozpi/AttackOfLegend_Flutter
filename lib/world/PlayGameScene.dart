@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:attack_of_legend/common/LevelManager.dart';
 import 'package:attack_of_legend/components/BigBoss.dart';
 import 'package:attack_of_legend/components/BigHero.dart';
@@ -10,6 +11,7 @@ import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/text.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../components/Bat.dart';
 import '../components/Flyer.dart';
@@ -137,13 +139,18 @@ class PlayGameScene extends Component
     if (isStartTakePower) {
       isStartTakePower = false;
       if (_hero != null) {
+        var morePower = 1;
+        if (kIsWeb || !Platform.isAndroid || !Platform.isIOS) {
+          morePower *= 3;
+        }
+
         _currentLevel?.add(Flyer(
             radius: 1.1,
             atPosition: _hero!.atShoot(),
             withDirection: _hero!.getDirection(),
             onDead: onFlierDead,
             onAttackBat: onFlierAttackBat,
-            power: power));
+            power: power * morePower));
       }
       (gameRef.world as LegendWorld).onShootSFX();
       _hero?.releaseAim();

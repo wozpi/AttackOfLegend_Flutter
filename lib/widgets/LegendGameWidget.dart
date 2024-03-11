@@ -10,6 +10,7 @@ import 'package:flame/events.dart';
 import 'package:flame/flame.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:flame_forge2d/flame_forge2d.dart' as forge_2d;
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../popups/SettingsPopup.dart';
 
@@ -69,7 +70,8 @@ class LegendWorld extends forge_2d.Forge2DWorld
 
   void showSettingPopup() async {
     final pref = await SharedPreferences.getInstance();
-    bool canPlayMusic = pref.getBool(Contain.playMusic) ?? true;
+    bool canPlayMusic =
+        pref.getBool(Contain.playMusic) ?? kIsWeb ? false : true;
     bool canPlaySound = pref.getBool(Contain.playSound) ?? true;
     bool canVibrate = pref.getBool(Contain.playVibrate) ?? false;
     add(SettingPopup(
@@ -186,6 +188,13 @@ class LegendWorld extends forge_2d.Forge2DWorld
     _audioManager?.onFail();
   }
 
+  void tryToogleMusic(bool isToogle) async {
+    final pref = await SharedPreferences.getInstance();
+    _audioManager?.canPlayMusic = isToogle;
+    _audioManager?.startBgmMusic();
+    pref.setBool(Contain.playMusic, isToogle);
+  }
+
   @override
   FutureOr<void> onLoad() async {
     await Flame.images.load("fx/Flier.png");
@@ -208,7 +217,8 @@ class LegendWorld extends forge_2d.Forge2DWorld
     await Flame.images.load("tree/leaf_tree2_02.png");
     await Flame.images.load("tree/leaf_tree2_03.png");
     await Flame.images.load("tree/leaf_tree3_01.png");
-
+    await Flame.images.load('background/background_castles.png');
+    await Flame.images.load('background/tiles.png');
     _toolBar = ToolBar()..priority = 10;
     add(_toolBar!);
     enterHomeScene();
@@ -222,6 +232,7 @@ class LegendWorld extends forge_2d.Forge2DWorld
         canPlaySound: canPlaySound,
         canVibrate: canVibrate);
     add(_audioManager!);
+
     return super.onLoad();
   }
 }

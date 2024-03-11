@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:attack_of_legend/components/CloudComponent.dart';
 import 'package:attack_of_legend/components/LegendIconButton.dart';
 import 'package:attack_of_legend/components/LevelMetal.dart';
 import 'package:attack_of_legend/widgets/LegendGameWidget.dart';
 import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../common/Contain.dart';
 import '../components/Background.dart';
 import '../components/LegendBackground.dart';
 import '../components/SkyComponent.dart';
@@ -14,10 +16,10 @@ import '../components/Tiles.dart';
 class LevelScene extends Component with HasGameRef<LegendGameWidget> {
   final _paint = Paint()..color = Colors.black26;
   int _atPage = 0;
-  final int _totalLevels = 29;
+  final int _totalLevels = 30;
   final int _maxItemInRow = 6;
   // current level player was played
-  int _currentLevel = 35;
+  int _currentLevel = 0;
   // int _atPage = 0;
   int _totalPage = 0;
 
@@ -33,19 +35,8 @@ class LevelScene extends Component with HasGameRef<LegendGameWidget> {
             screenSize: gameRef.size / gameRef.camera.viewfinder.zoom)
         .onLoad();
 
-    children.whereType<Background>().forEach((element) {
-      element.setColor(Colors.black54);
-    });
-
-    children.whereType<SkyComponent>().forEach((element) {
-      element.children.whereType<CloudComponent>().forEach((cloudElement) {
-        cloudElement.setColor(Colors.black54);
-      });
-    });
-
-    // final pref = await SharedPreferences.getInstance();
-    // _currentLevel = pref.getInt(Contain.heroLevel) ?? 1;
-    // pref.setInt(Contain.heroLevel, 1);
+    final pref = await SharedPreferences.getInstance();
+    _currentLevel = pref.getInt(Contain.heroLevel) ?? 1;
 
     print('current level?: $_currentLevel');
 
@@ -61,6 +52,8 @@ class LevelScene extends Component with HasGameRef<LegendGameWidget> {
           onPressed: () {
             onPressPreviewLevels();
           })
+        ..add(
+            ColorEffect(const Color(0xFF0591E5), EffectController(duration: 0)))
         ..position = Vector2(startPositionX + 3, gameRef.size.y / 20)
         ..flipHorizontally()
         ..size = Vector2(4, 4);
@@ -71,6 +64,8 @@ class LevelScene extends Component with HasGameRef<LegendGameWidget> {
           onPressed: () {
             onPressNextLevels();
           })
+        ..add(
+            ColorEffect(const Color(0xFF0591E5), EffectController(duration: 0)))
         ..position = Vector2(
             ((gameRef.size.x - safeArea.left) / levelZoomCamera) - 3,
             gameRef.size.y / 20)

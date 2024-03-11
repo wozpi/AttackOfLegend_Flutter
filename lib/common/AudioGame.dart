@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flame/components.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:vibration/vibration.dart';
@@ -58,12 +57,13 @@ class AudioGame extends Component {
       minPlayers: 1,
       maxPlayers: 1,
     );
-    FlameAudio.bgm.initialize();
+
+    super.onLoad();
     startBgmMusic();
-    return super.onLoad();
   }
 
-  void startBgmMusic() {
+  void startBgmMusic() async {
+    FlameAudio.bgm.initialize();
     if (!FlameAudio.bgm.isPlaying && canPlayMusic) {
       FlameAudio.bgm.play('musics/Woodland_Fantasy.mp3');
     }
@@ -90,7 +90,6 @@ class AudioGame extends Component {
   void firer() {
     if (canPlaySound) {
       shootPool.start();
-      batDeadPool.start();
     }
   }
 
