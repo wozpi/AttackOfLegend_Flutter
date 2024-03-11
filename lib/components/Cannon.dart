@@ -51,10 +51,10 @@ class Cannon extends PositionComponent {
     if (!isGoingToAim) {
       if (_aimShooter != null) {}
 
-      if (_aimShooter!.angle > radians(0)) {
+      if (_aimShooter!.angle > (0)) {
         _directionShoot = -1;
       } else {
-        if (_aimShooter!.angle < -radians(80)) {
+        if (_aimShooter!.angle < -(80 * pi / 180)) {
           _directionShoot = 1;
         }
       }
@@ -64,7 +64,7 @@ class Cannon extends PositionComponent {
   }
 
   double getAngleDegress() {
-    return degrees(_aimShooter?.angle ?? 0.0);
+    return (_aimShooter?.angle ?? 0.0) * 180 / pi;
   }
 
   void anim() {
