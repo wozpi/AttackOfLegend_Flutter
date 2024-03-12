@@ -5,7 +5,7 @@ import 'package:attack_of_legend/levels/LegendLevel.dart';
 import 'package:flame/components.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
 
-import '../components/Obstruct.dart';
+import '../components/objects/Obstruct.dart';
 
 class Level19 extends LegendLevel {
   @override

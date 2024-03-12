@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:attack_of_legend/components/Obstacle.dart';
+import 'package:attack_of_legend/components/objects/Obstacle.dart';
 import 'package:flame/components.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
 

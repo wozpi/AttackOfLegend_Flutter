@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:attack_of_legend/components/Bat.dart';
 import 'package:attack_of_legend/components/FlyerSprite.dart';
-import 'package:attack_of_legend/components/MagicHat.dart';
+import 'package:attack_of_legend/components/objects/MagicHat.dart';
 import 'package:attack_of_legend/fx/ExploreFx.dart';
 import 'package:flame/components.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';

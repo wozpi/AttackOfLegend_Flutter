@@ -4,7 +4,7 @@ import 'package:attack_of_legend/components/Bat.dart';
 import 'package:attack_of_legend/levels/LegendLevel.dart';
 import 'package:flame/components.dart';
 
-import '../components/Obstruct.dart';
+import '../components/objects/Obstruct.dart';
 
 class Level16 extends LegendLevel {
   @override

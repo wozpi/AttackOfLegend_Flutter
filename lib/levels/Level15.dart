@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:attack_of_legend/components/Bat.dart';
-import 'package:attack_of_legend/components/Obstruct.dart';
+import 'package:attack_of_legend/components/objects/Obstruct.dart';
 import 'package:attack_of_legend/levels/LegendLevel.dart';
 import 'package:flame/components.dart';
 

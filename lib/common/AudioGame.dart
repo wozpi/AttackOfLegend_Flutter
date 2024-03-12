@@ -57,13 +57,14 @@ class AudioGame extends Component {
       minPlayers: 1,
       maxPlayers: 1,
     );
-
+    FlameAudio.bgm.initialize();
     super.onLoad();
     startBgmMusic();
   }
 
   void startBgmMusic() async {
-    FlameAudio.bgm.initialize();
+    print('start music!: $canPlayMusic');
+
     if (!FlameAudio.bgm.isPlaying && canPlayMusic) {
       FlameAudio.bgm.play('musics/Woodland_Fantasy.mp3');
     }

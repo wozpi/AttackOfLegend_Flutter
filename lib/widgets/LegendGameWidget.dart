@@ -11,6 +11,7 @@ import 'package:flame/flame.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:flame_forge2d/flame_forge2d.dart' as forge_2d;
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../popups/SettingsPopup.dart';
 
@@ -70,8 +71,7 @@ class LegendWorld extends forge_2d.Forge2DWorld
 
   void showSettingPopup() async {
     final pref = await SharedPreferences.getInstance();
-    bool canPlayMusic =
-        pref.getBool(Contain.playMusic) ?? kIsWeb ? false : true;
+    bool canPlayMusic = pref.getBool(Contain.playMusic) ?? true;
     bool canPlaySound = pref.getBool(Contain.playSound) ?? true;
     bool canVibrate = pref.getBool(Contain.playVibrate) ?? false;
     add(SettingPopup(
@@ -104,6 +104,9 @@ class LegendWorld extends forge_2d.Forge2DWorld
   }
 
   void enterPlayGameScene(int level) {
+    if (kIsWeb) {
+      _audioManager?.startBgmMusic();
+    }
     _toolBar?.enableBackButton();
     _toolBar?.enableFrameFlier(true);
     changeScene(PlayGameScene(atLevel: level));
@@ -150,6 +153,7 @@ class LegendWorld extends forge_2d.Forge2DWorld
 
   @override
   void onTapDown(TapDownEvent event) {
+    print('event: ${event}: ${event.deviceKind == PointerDeviceKind.mouse}');
     if (_scene is PlayGameScene) {
       (_scene as PlayGameScene?)?.onPressedDown();
     }

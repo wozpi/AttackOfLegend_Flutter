@@ -4,8 +4,8 @@ import 'dart:math';
 import 'package:attack_of_legend/components/Bat.dart';
 import 'package:attack_of_legend/levels/LegendLevel.dart';
 import 'package:flame/components.dart';
-import '../components/MagicHat.dart';
-import '../components/Obstruct.dart';
+import '../components/objects/MagicHat.dart';
+import '../components/objects/Obstruct.dart';
 
 class Level26 extends LegendLevel {
   @override

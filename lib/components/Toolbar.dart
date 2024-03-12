@@ -34,27 +34,6 @@ class ToolBar extends PositionComponent with HasGameRef<LegendGameWidget> {
       ..size = Vector2(4, 4)
       ..anchor = Anchor.center;
 
-//Show button enable music background for web
-    if (kIsWeb) {
-      _toogleMusic = LegendIconButton(
-          icon: isReadyTurnOfMusic
-              ? 'hub/turn_off_music.png'
-              : 'hub/turn_on_music.png',
-          onPressed: () async {
-            isReadyTurnOfMusic = !isReadyTurnOfMusic;
-            _toogleMusic!.sprite = (Sprite(await Flame.images.load(
-                isReadyTurnOfMusic
-                    ? 'hub/turn_on_music.png'
-                    : 'hub/turn_off_music.png')));
-            _toogleMusic!.removeFromParent();
-            _toogleMusic = null;
-            (gameRef.world as LegendWorld).tryToogleMusic(isReadyTurnOfMusic);
-          })
-        ..position =
-            Vector2((gameRef.size / gameRef.camera.viewfinder.zoom).x - 4, 3.5)
-        ..size = Vector2(4, 4)
-        ..anchor = Anchor.center;
-    }
     enableSettingButton();
 
     return super.onLoad();
