@@ -4,8 +4,6 @@ import 'package:attack_of_legend/components/FrameFlier.dart';
 import 'package:attack_of_legend/components/LegendIconButton.dart';
 import 'package:attack_of_legend/widgets/LegendGameWidget.dart';
 import 'package:flame/components.dart';
-import 'package:flame/flame.dart';
-import 'package:flutter/foundation.dart';
 
 class ToolBar extends PositionComponent with HasGameRef<LegendGameWidget> {
   FrameFlier? _frameFlier;
